@@ -8,6 +8,7 @@ function App() {
   const [news, setNews] = useState([]);
   const [currency, setCurrency] = useState(null);
   const [darkMode, setDarkMode] = useState(true);
+  const [showDemo, setShowDemo] = useState(false);
 
   // Currency selection states
   const [fromCurrency, setFromCurrency] = useState("USD");
@@ -65,6 +66,12 @@ function App() {
     if (savedTheme !== null) {
       setDarkMode(savedTheme === "true");
     }
+
+    // Check if user has seen demo before
+    const hasSeenDemo = localStorage.getItem("hasSeenDemo");
+    if (!hasSeenDemo) {
+      setShowDemo(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -100,6 +107,11 @@ function App() {
 
     return () => observer.disconnect();
   }, []);
+
+  const closeDemo = () => {
+    setShowDemo(false);
+    localStorage.setItem("hasSeenDemo", "true");
+  };
 
   const checkBackendConnection = async () => {
     setBackendStatus("checking");
@@ -204,6 +216,74 @@ function App() {
 
   return (
     <div className={`app ${darkMode ? "dark-theme" : "light-theme"}`}>
+      {/* Demo Modal - First Time Visitor */}
+      {showDemo && (
+        <div className="demo-overlay" onClick={closeDemo}>
+          <div className="demo-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="demo-close" onClick={closeDemo}>
+              ×
+            </button>
+            <div className="demo-header">
+              <span className="demo-icon">🎓</span>
+              <h2>Welcome to APIHub!</h2>
+            </div>
+            <div className="demo-content">
+              <p>Here's how to use the dashboard:</p>
+              <div className="demo-steps">
+                <div className="demo-step">
+                  <div className="step-number">1</div>
+                  <div className="step-text">
+                    <strong>🌤️ Weather Service</strong>
+                    <p>
+                      Enter any city name and click "Get Weather" to see
+                      real-time weather data including temperature, humidity,
+                      and wind speed.
+                    </p>
+                  </div>
+                </div>
+                <div className="demo-step">
+                  <div className="step-number">2</div>
+                  <div className="step-text">
+                    <strong>📰 News Service</strong>
+                    <p>
+                      Click "Load Latest News" to fetch the latest headlines
+                      from around the world.
+                    </p>
+                  </div>
+                </div>
+                <div className="demo-step">
+                  <div className="step-number">3</div>
+                  <div className="step-text">
+                    <strong>💱 Currency Exchange</strong>
+                    <p>
+                      Select your "From" and "To" currencies, enter an amount,
+                      and click "Get Exchange Rate" for instant conversion.
+                    </p>
+                  </div>
+                </div>
+                <div className="demo-step">
+                  <div className="step-number">4</div>
+                  <div className="step-text">
+                    <strong>🌓 Dark/Light Mode</strong>
+                    <p>
+                      Toggle between dark and light themes using the button in
+                      the top-right corner.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="demo-tip">
+                <span>💡 Tip:</span> You can also press "Enter" after typing a
+                city name to get weather instantly!
+              </div>
+            </div>
+            <button className="demo-button" onClick={closeDemo}>
+              Got it! Let's start 🚀
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Modern Navigation with Dark Mode Toggle */}
       <nav className="navbar">
         <div className="nav-container">
