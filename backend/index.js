@@ -1,5 +1,3 @@
-// app.js
-
 const express = require("express");
 const cors = require("cors");
 const weatherRoute = require("./routes/weather");
@@ -17,10 +15,13 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.send("API is running successfully 🚀");
 });
+
+// APIs
 app.use("/api/weather", weatherRoute);
 app.use("/api/news", newsRoute);
 app.use("/api/currency", currencyRoute);
-// Sample API route
+
+// Test API
 app.get("/api/test", (req, res) => {
     res.json({
         success: true,
@@ -28,9 +29,5 @@ app.get("/api/test", (req, res) => {
     });
 });
 
-// Port setup
-const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+module.exports = app;
