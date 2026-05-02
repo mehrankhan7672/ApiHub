@@ -26,7 +26,9 @@ function App() {
 
   // Backend connection state
   const [backendStatus, setBackendStatus] = useState("checking");
-  const [backendUrl, setBackendUrl] = useState("https://api-hub-ldzd.vercel.app/");
+  const [backendUrl, setBackendUrl] = useState(
+    "https://api-hub-ldzd.vercel.app",
+  );
 
   // Complete currencies list with flags
   const allCurrencies = [
